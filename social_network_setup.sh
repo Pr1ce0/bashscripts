@@ -10,18 +10,21 @@ fi
 apt update && apt upgrade -y
 
 # Install necessary dependencies
-apt install -y apache2 git nodejs npm
-
-# Check if Git is installed
-if ! command -v git &>/dev/null; then
-  echo "Git is not installed. Installing Git..."
-  apt install -y git
-fi
+apt install -y apache2 git
 
 # Check if Node.js and npm are installed
 if ! command -v node &>/dev/null || ! command -v npm &>/dev/null; then
   echo "Node.js or npm is not installed. Installing Node.js and npm..."
-  apt install -y nodejs npm
+
+  # Install Node.js using NVM (Node Version Manager)
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+  source ~/.bashrc
+
+  # Install the latest LTS version of Node.js
+  nvm install --lts
+
+  # Set the LTS version as the default
+  nvm alias default 'lts/*'
 fi
 
 # Clone the Git repository
